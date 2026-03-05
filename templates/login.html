@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLT Dashboard Login</title>
+    <style>
+        :root { color-scheme: light; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+        .wrap {
+            min-height: calc(100vh - 68px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        h1 { margin: 0 0 6px; font-size: 22px; }
+        p { margin: 0 0 16px; color: #4b5563; }
+        label { display: block; font-size: 14px; margin-bottom: 6px; }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        button {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background: #2563eb;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .error {
+            margin-bottom: 12px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+        }
+        .hint { margin-top: 10px; font-size: 12px; color: #6b7280; }
+        .app-footer {
+            border-top: 1px solid #e5e7eb;
+            background: #fff;
+            color: #6b7280;
+            text-align: center;
+            font-size: 12px;
+            padding: 12px 16px;
+        }
+        .app-footer-line { margin: 2px 0; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="card">
+            <h1>PLT Dashboard</h1>
+            <p>Sign in with your EPI-USE email to continue.</p>
+
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% endif %}
+
+            {% if step == "verify" %}
+            <form method="POST" action="/verify">
+                <label>Email</label>
+                <input type="email" value="{{ email }}" readonly>
+                <input type="hidden" name="email" value="{{ email }}">
+
+                <label>6-digit code</label>
+                <input type="text" name="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required>
+
+                <button type="submit">Verify Code</button>
+            </form>
+            {% else %}
+            <form method="POST" action="/login">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="name@epiuse.com" value="{{ email or '' }}" required>
+
+                <button type="submit">Send Login Code</button>
+            </form>
+            {% endif %}
+
+            <div class="hint">Only <strong>@epiuse.com</strong> email addresses are allowed.</div>
+        </div>
+    </div>
+    {% include "_footer.html" %}
+</body>
+</html>

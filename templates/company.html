@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ account.company_name }} — Company CRM</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-bp-id="{{ account.bp_id }}">
+    <header class="header">
+        <div class="header-left">
+            {% include "_brand_logo.html" %}
+            <span class="subtitle">Company CRM</span>
+        </div>
+        <div class="header-right">
+            <a class="btn btn-sm" href="/">Back to Dashboard</a>
+            <div class="header-user">
+                <span class="header-user-email">{{ current_user.email }}</span>
+                <a class="btn btn-sm" href="/logout">Logout</a>
+            </div>
+            <button class="btn btn-icon" id="theme-toggle" title="Toggle theme">
+                <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="company-page">
+        <section class="company-hero" id="company-hero"></section>
+
+        <section class="crm-summary" id="crm-summary"></section>
+
+        <section class="crm-grid">
+            <article class="crm-card">
+                <div class="crm-section-header">
+                    <h2>Contacts</h2>
+                </div>
+                <form class="crm-form" id="contact-form">
+                    <input class="detail-input" name="full_name" placeholder="Full name" required>
+                    <input class="detail-input" name="job_title" placeholder="Title">
+                    <input class="detail-input" name="email" placeholder="Email">
+                    <input class="detail-input" name="phone" placeholder="Phone">
+                    <input class="detail-input" name="linkedin_url" placeholder="LinkedIn URL">
+                    <input class="detail-input" name="source" placeholder="Source (manual, web, referral)">
+                    <input class="detail-input" type="number" min="0" max="100" step="0.1" name="confidence" placeholder="Confidence 0-100">
+                    <textarea class="detail-textarea" name="notes" placeholder="Notes"></textarea>
+                    <button class="btn btn-primary" type="submit">Add Contact</button>
+                </form>
+                <div class="crm-table-wrap">
+                    <table class="crm-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Title</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contacts-tbody"></tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="crm-card">
+                <div class="crm-section-header">
+                    <h2>Next Actions</h2>
+                </div>
+                <form class="crm-form" id="action-form">
+                    <input class="detail-input" name="title" placeholder="Action title" required>
+                    <textarea class="detail-textarea" name="details" placeholder="Action details"></textarea>
+                    <div class="crm-form-row">
+                        <input class="detail-input" type="date" name="due_date">
+                        <select class="detail-select" name="priority">
+                            <option value="medium">Medium priority</option>
+                            <option value="high">High priority</option>
+                            <option value="low">Low priority</option>
+                        </select>
+                    </div>
+                    <div class="crm-form-row">
+                        <select class="detail-select" name="status">
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="done">Done</option>
+                        </select>
+                        <select class="detail-select" name="contact_id" id="action-contact-select">
+                            <option value="">No contact linked</option>
+                        </select>
+                    </div>
+                    <input class="detail-input" name="owner_email" placeholder="Owner email (optional)">
+                    <button class="btn btn-primary" type="submit">Add Action</button>
+                </form>
+                <div class="crm-table-wrap">
+                    <table class="crm-table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Due</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="actions-tbody"></tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <section class="crm-card crm-card-full">
+            <div class="crm-section-header">
+                <h2>Touchpoints</h2>
+            </div>
+            <form class="crm-form" id="touchpoint-form">
+                <div class="crm-form-row">
+                    <input class="detail-input" type="date" name="touchpoint_date" required>
+                    <select class="detail-select" name="touchpoint_type" required>
+                        <option value="call">Call</option>
+                        <option value="email">Email</option>
+                        <option value="meeting">Meeting</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="event">Event</option>
+                        <option value="note">Note</option>
+                    </select>
+                </div>
+                <div class="crm-form-row">
+                    <select class="detail-select" name="contact_id" id="touchpoint-contact-select">
+                        <option value="">No contact linked</option>
+                    </select>
+                    <input class="detail-input" name="summary" placeholder="Summary">
+                </div>
+                <input class="detail-input" name="outcome" placeholder="Outcome">
+                <textarea class="detail-textarea" name="notes" placeholder="Detailed notes"></textarea>
+                <button class="btn btn-primary" type="submit">Add Touchpoint</button>
+            </form>
+
+            <div class="crm-list" id="touchpoints-list"></div>
+        </section>
+
+        <div class="crm-feedback" id="crm-feedback" hidden></div>
+    </main>
+
+    {% include "_footer.html" %}
+
+    <script src="/static/company.js"></script>
+</body>
+</html>

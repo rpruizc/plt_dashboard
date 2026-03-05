@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoring Profiles</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-user-role="{{ current_user.role }}" data-user-email="{{ current_user.email }}">
+    <header class="header">
+        <div class="header-left">
+            {% include "_brand_logo.html" %}
+            <span class="subtitle">Scoring Profile Manager</span>
+        </div>
+        <div class="header-right">
+            <div class="header-user">
+                <span class="header-user-email">{{ current_user.email }}</span>
+                <a class="btn btn-sm" href="/">Dashboard</a>
+                <a class="btn btn-sm" href="/logout">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="profiles-wrap">
+        <div class="profiles-title-row">
+            <h2>Score Reference Configurations</h2>
+            <div class="profiles-actions">
+                <button class="btn" id="btn-create-profile">New Profile</button>
+                <button class="btn" id="btn-duplicate-profile">Duplicate</button>
+                <button class="btn" id="btn-select-profile">Use In My Session</button>
+                <button class="btn btn-primary" id="btn-set-default">Set As Global Default</button>
+            </div>
+        </div>
+
+        <div class="profiles-grid">
+            <section class="profiles-card">
+                <h3 style="margin-bottom:10px">Available Profiles</h3>
+                <p class="profiles-note">Owned profiles are editable. Shared/default profiles are read-only.</p>
+                <div class="profiles-list" id="profiles-list"></div>
+            </section>
+
+            <section class="profiles-card">
+                <div class="profiles-actions">
+                    <button class="btn btn-primary" id="btn-save-profile">Save</button>
+                    <button class="btn" id="btn-delete-profile">Delete</button>
+                </div>
+
+                <div class="profiles-form-row">
+                    <div>
+                        <label class="profiles-label" for="profile-name">Profile Name</label>
+                        <input class="profiles-input" id="profile-name" maxlength="80">
+                    </div>
+                    <div>
+                        <label class="profiles-label" for="profile-owner">Owner</label>
+                        <input class="profiles-input" id="profile-owner" readonly>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px">
+                    <label class="profiles-label" for="profile-description">Description</label>
+                    <textarea class="profiles-textarea" id="profile-description"></textarea>
+                </div>
+
+                <h3 style="margin:8px 0">Factor Weights</h3>
+                <div class="profiles-form-row" id="weights-form"></div>
+                <div id="weights-validation" class="profiles-note"></div>
+
+                <h3 style="margin:10px 0 8px">Industry Score Reference</h3>
+                <div class="industry-table-wrap">
+                    <table class="industry-edit-table">
+                        <thead>
+                            <tr>
+                                <th>Industry</th>
+                                <th style="width:140px">Score (0-100)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="industry-scores-body"></tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top:16px">
+                    <h3 style="margin-bottom:8px">Share (Read-only)</h3>
+                    <div class="profiles-actions">
+                        <input class="profiles-input" id="share-email" placeholder="user@epiuse.com" style="max-width:280px">
+                        <button class="btn" id="btn-share-profile">Share</button>
+                    </div>
+                    <div class="shares-list" id="shares-list"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    {% include "_footer.html" %}
+
+    <script src="/static/scoring_profiles.js"></script>
+</body>
+</html>

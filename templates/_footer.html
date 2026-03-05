@@ -1,0 +1,10 @@
+{% set footer_user_email = current_user.email if current_user is defined else (email if email is defined else session.get('user_email')) %}
+<footer class="app-footer">
+    <div class="app-footer-line">© 2026 EPI-USE México. All rights reserved.</div>
+    <div class="app-footer-line">
+        {% if footer_user_email %}
+        Signed in as {{ footer_user_email }} ·
+        {% endif %}
+        Contact: {{ footer_contact_email }}
+    </div>
+</footer>
