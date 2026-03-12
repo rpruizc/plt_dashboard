@@ -1,22 +1,22 @@
 """
-SQLite database layer for account enrichments, auth, and scoring profiles.
-
-This module is now a shim that re-exports everything from the db/ package
-for backward compatibility. All implementation lives in db/*.py.
+Database package — re-exports all public functions for backward compatibility.
 """
 
-from db import (  # noqa: F401
-    # Core
-    get_db,
-    init_db,
-    # Accounts
+# Core
+from db.core import get_db, init_db, _serialize_json, _parse_json, _row_to_dict, _UNSET
+
+# Accounts
+from db.accounts import (
     get_enrichment,
     get_all_enrichments,
     upsert_enrichment,
     get_all_tags,
     save_cached_accounts,
     load_cached_accounts,
-    # CRM
+)
+
+# CRM
+from db.crm import (
     list_company_contacts,
     create_company_contact,
     update_company_contact,
@@ -29,7 +29,10 @@ from db import (  # noqa: F401
     create_company_next_action,
     update_company_next_action,
     delete_company_next_action,
-    # Pipeline
+)
+
+# Pipeline
+from db.pipeline import (
     get_company_pipeline_statuses,
     upsert_company_pipeline_status,
     list_url_candidates_for_company,
@@ -38,7 +41,10 @@ from db import (  # noqa: F401
     upsert_url_candidate,
     update_url_candidate,
     bulk_set_url_candidate_status_for_company,
-    # Scoring
+)
+
+# Scoring
+from db.scoring import (
     get_scoring_weights,
     update_scoring_weights,
     get_default_scoring_profile_id,
@@ -55,7 +61,10 @@ from db import (  # noqa: F401
     share_scoring_profile,
     unshare_scoring_profile,
     get_scoring_profile_shares,
-    # Users
+)
+
+# Users
+from db.users import (
     create_or_get_user,
     get_user_by_email,
     get_all_users,
@@ -64,7 +73,10 @@ from db import (  # noqa: F401
     store_login_code,
     verify_login_code,
     generate_login_code,
-    # Data Dictionary
+)
+
+# Data Dictionary
+from db.data_dictionary import (
     get_all_dd_comments,
     upsert_dd_comment,
 )

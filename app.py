@@ -3897,19 +3897,9 @@ def _init_app():
     global ACCOUNTS
     init_db()
 
-    # Try loading from Excel first; fall back to cached DB
-    try:
-        ACCOUNTS = build_accounts()
-        print(f"Loaded {len(ACCOUNTS)} accounts from Excel")
-        save_cached_accounts(ACCOUNTS)
-    except FileNotFoundError:
-        print("Excel file not found, loading from cached DB...")
-        cached = load_cached_accounts()
-        if cached is None:
-            raise RuntimeError(
-                "No Excel file and no cached accounts in DB. "
-                "Run the app locally with the Excel file first to populate the cache."
-            )
+    # DB is the primary source. Only read Excel if DB has no accounts yet.
+    cached = load_cached_accounts()
+    if cached is not None:
         ACCOUNTS = cached
         # Re-apply enrichments on top of cached data
         enrichments = get_all_enrichments()
@@ -3930,7 +3920,18 @@ def _init_app():
             account["starred"] = bool(enrichment.get("starred", account.get("starred", 0)))
             account["tags"] = enrichment.get("tags", account.get("tags", []))
             account["target_list"] = bool(enrichment.get("target_list", account.get("target_list", 0)))
-        print(f"Loaded {len(ACCOUNTS)} accounts from cached DB")
+        print(f"Loaded {len(ACCOUNTS)} accounts from DB")
+    else:
+        # First run: import from Excel, classify, and persist to DB
+        try:
+            ACCOUNTS = build_accounts()
+            save_cached_accounts(ACCOUNTS)
+            print(f"Imported {len(ACCOUNTS)} accounts from Excel into DB")
+        except FileNotFoundError:
+            raise RuntimeError(
+                "No accounts in DB and no Excel file found. "
+                "Place the Excel file in data/ for initial import."
+            )
 
     default_profile = get_default_scoring_profile()
     if default_profile:
