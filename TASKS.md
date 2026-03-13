@@ -15,27 +15,27 @@
 - [x] Verify all existing imports still work after shim
 
 ### Shared Utilities
-- [ ] Create `utils.py` — move `sanitize()`, `normalize_text()`, `normalize_optional_int()`, `normalize_optional_date()`, `normalize_optional_confidence()`, `normalize_website_url()`, `validate_weights_payload()`, `validate_industry_scores_payload()`
-- [ ] Update all callers in `app.py` and `database.py` modules to import from `utils.py`
+- [x] Create `utils.py` — move `sanitize()`, `normalize_text()`, `normalize_optional_int()`, `normalize_optional_date()`, `normalize_optional_confidence()`, `normalize_website_url()`, `validate_weights_payload()`, `validate_industry_scores_payload()`
+- [x] Update all callers in `app.py` and `database.py` modules to import from `utils.py`
 
 ### State Module
-- [ ] Create `state.py` with `ACCOUNTS`, `URL_DISCOVERY_JOBS`, `URL_VALIDATION_JOBS`
-- [ ] Update all references to these globals across app.py
+- [x] Create `state.py` with `ACCOUNTS`, `URL_DISCOVERY_JOBS`, `URL_VALIDATION_JOBS`
+- [x] Update all references to these globals across app.py
 
 ### Route Layer → `routes/` package
-- [ ] Create `routes/` directory and `routes/__init__.py`
-- [ ] Extract `routes/auth.py` (`auth_bp`) — login, verify, logout, pending + decorators
-- [ ] Extract `routes/admin.py` (`admin_bp`) — /admin/users + approve/deny/make-admin
-- [ ] Extract `routes/accounts.py` (`accounts_bp`) — /api/accounts, /api/stats, /api/tags, /api/industries
-- [ ] Extract `routes/crm.py` (`crm_bp`) — /companies/<bp_id> page + all /api/companies/ CRUD
-- [ ] Extract `routes/pipeline.py` (`pipeline_bp`) — /pipeline/urls page + all /api/pipeline/ routes
-- [ ] Extract `routes/scoring.py` (`scoring_bp`) — /scoring-profiles page + all /api/scoring-profiles/ + weights
-- [ ] Extract `routes/export.py` (`export_bp`) — /api/export/csv, /api/export/presentation
+- [x] Create `routes/` directory and `routes/__init__.py`
+- [x] Extract `routes/auth.py` (`auth_bp`) — login, verify, logout, pending + decorators
+- [x] Extract `routes/admin.py` (`admin_bp`) — /admin/users + approve/deny/make-admin
+- [x] Extract `routes/accounts.py` (`accounts_bp`) — /api/accounts, /api/stats, /api/tags, /api/industries
+- [x] Extract `routes/crm.py` (`crm_bp`) — /companies/<bp_id> page + all /api/companies/ CRUD
+- [x] Extract `routes/pipeline.py` (`pipeline_bp`) — /pipeline/urls page + all /api/pipeline/ routes
+- [x] Extract `routes/scoring.py` (`scoring_bp`) — /scoring-profiles page + all /api/scoring-profiles/ + weights
+- [x] Extract `routes/export.py` (`export_bp`) — /api/export/csv, /api/export/presentation
 
 ### App Factory
-- [ ] Slim `app.py` down to factory (~200 lines): app creation, config, blueprint registration, `build_accounts()`, `_init_app()`
-- [ ] Register all blueprints in app factory
-- [ ] Full regression test — every existing page and endpoint works identically
+- [x] Slim `app.py` down to factory (~200 lines): app creation, config, blueprint registration, `build_accounts()`, `_init_app()`
+- [x] Register all blueprints in app factory
+- [x] Full regression test — every existing page and endpoint works identically
 
 ---
 
